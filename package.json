@@ -7,6 +7,9 @@
   "scripts": {
     "dev": "tsx --watch src/index.ts"
   },
+  "engines": {
+    "node": "24.x"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -17,5 +20,8 @@
     "prettier": "3.8.1",
     "tsx": "4.21.0",
     "typescript": "5.9.3"
+  },
+  "volta": {
+    "node": "24.14.0"
   }
 }
