@@ -1,5 +1,9 @@
-import Fastify from "fastify";
+import "dotenv/config";
+
+import fastifyCors from "@fastify/cors";
 import fastifySwagger from "@fastify/swagger";
+import fastifyApiReference from "@scalar/fastify-api-reference";
+import Fastify from "fastify";
 import {
   jsonSchemaTransform,
   serializerCompiler,
@@ -7,9 +11,8 @@ import {
   ZodTypeProvider,
 } from "fastify-type-provider-zod";
 import z from "zod";
+
 import { auth } from "./lib/auth.js";
-import fastifyCors from "@fastify/cors";
-import fastifyApiReference from "@scalar/fastify-api-reference";
 
 const app = Fastify({
   logger: true,
@@ -21,8 +24,8 @@ app.setSerializerCompiler(serializerCompiler);
 await app.register(fastifySwagger, {
   openapi: {
     info: {
-      title: "Treinos API",
-      description: "Documentação da API de Treinos",
+      title: "Bootcamp Treinos API",
+      description: "API para o bootcamp de treinos do FSC",
       version: "1.0.0",
     },
     servers: [
@@ -44,7 +47,11 @@ await app.register(fastifyApiReference, {
   routePrefix: "/docs",
   configuration: {
     sources: [
-      { title: "Treinos API", slug: "treinos-api", url: "/swagger.json" },
+      {
+        title: "Bootcamp Treinos API",
+        slug: "bootcamp-treinos-api",
+        url: "/swagger.json",
+      },
       {
         title: "Auth API",
         slug: "auth-api",
@@ -69,7 +76,7 @@ app.withTypeProvider<ZodTypeProvider>().route({
   method: "GET",
   url: "/",
   schema: {
-    description: "Hello World",
+    description: "Hello world",
     tags: ["Hello World"],
     response: {
       200: z.object({
