@@ -14,6 +14,7 @@ interface Dto {
       name: string;
       sets: number;
       reps: number;
+      weight: number;
       restTimeInSeconds: number;
     }>;
   }>;
@@ -53,6 +54,7 @@ export class CreateWorkoutPlan {
                   name: exercise.name,
                   sets: exercise.sets,
                   reps: exercise.reps,
+                  weight: exercise.weight,
                   restTimeInSeconds: exercise.restTimeInSeconds,
                 })),
               },
