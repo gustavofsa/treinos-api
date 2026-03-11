@@ -1,7 +1,8 @@
+import { NotFoundError } from "../errors/index.js";
 import { WeekDay } from "../generated/prisma/enums.js";
 import { prisma } from "../lib/db.js";
 
-interface Dto {
+interface InputDto {
   userId: string;
   name: string;
   workoutDays: Array<{
@@ -21,7 +22,7 @@ interface Dto {
 }
 
 export class CreateWorkoutPlan {
-  async execute(dto: Dto) {
+  async execute(dto: InputDto) {
     const existingWorkoutPlan = await prisma.workoutPlan.findFirst({
       where: {
         userId: dto.userId,
@@ -37,7 +38,7 @@ export class CreateWorkoutPlan {
         });
       }
 
-      const result = await tx.workoutPlan.create({
+      const workoutPlan = await tx.workoutPlan.create({
         data: {
           name: dto.name,
           userId: dto.userId,
@@ -62,6 +63,21 @@ export class CreateWorkoutPlan {
           },
         },
       });
+
+      const result = await tx.workoutPlan.findUnique({
+        where: { id: workoutPlan.id },
+        include: {
+          workoutDays: {
+            include: {
+              exercises: true,
+            },
+          },
+        },
+      });
+
+      if (!result) {
+        throw new NotFoundError("Workout plan not found");
+      }
 
       return result;
     });
