@@ -6,6 +6,10 @@ export const ErrorSchema = z.object({
   code: z.string(),
 });
 
+export const StartWorkoutSessionResponseSchema = z.object({
+  workoutSessionId: z.uuid(),
+});
+
 export const WorkoutPlanSchema = z.object({
   id: z.uuid(),
   name: z.string().trim().min(1),
