@@ -11,6 +11,8 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
     method: "POST",
     url: "/",
     schema: {
+      tags: ["Workout Plan"],
+      summary: "Create a workout plan",
       body: WorkoutPlanSchema.omit({ id: true }),
       response: {
         201: WorkoutPlanSchema,
@@ -25,7 +27,6 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
         const session = await auth.api.getSession({
           headers: fromNodeHeaders(request.headers),
         });
-
         if (!session) {
           return reply.status(401).send({
             error: "Unauthorized",
@@ -33,13 +34,12 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
           });
         }
         const createWorkoutPlan = new CreateWorkoutPlan();
-        const workoutPlan = await createWorkoutPlan.execute({
+        const result = await createWorkoutPlan.execute({
           userId: session.user.id,
           name: request.body.name,
           workoutDays: request.body.workoutDays,
         });
-
-        return reply.status(201).send(workoutPlan);
+        return reply.status(201).send(result);
       } catch (error) {
         app.log.error(error);
         if (error instanceof NotFoundError) {
@@ -48,9 +48,8 @@ export const workoutPlanRoutes = async (app: FastifyInstance) => {
             code: "NOT_FOUND_ERROR",
           });
         }
-
         return reply.status(500).send({
-          error: "Internal Server Error",
+          error: "Internal server error",
           code: "INTERNAL_SERVER_ERROR",
         });
       }
