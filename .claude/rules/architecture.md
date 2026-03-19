@@ -10,7 +10,7 @@
 - **SEMPRE** use `fastify-type-provider-zod` para definir os schemas de request e response de uma rota.
 - **SEMPRE** use Zod v4, **NUNCA** use o Zod v3.
 - **SEMPRE** crie os schemas das operações de criação e atualização dentro de @src/schemas/index.ts.
-- **SEMPRE** use `z.enum(WeekDay)` importado de `../generated/prisma/enums.js` para tipar campos de dia da semana nos schemas. **NUNCA** use `z.string()` para representar WeekDay.
+- **SEMPRE** use `z.enum(WeekDay)` importado de `../generated/prisma/enums.js` para tipar campos de dia da semana nos schemas e nas interfaces de resposta. **NUNCA** use `z.string()` para representar WeekDay.
 - **SEMPRE** use o @src/schemas/index.ts para tipar respostas de erro.
 - Uma rota **NUNCA** deve conter regras de negócio, apenas validações de dados (com o Zod) e de autenticação (se necessário).
 - Quando uma rota precisar ser protegida (acessível apenas por usuários autenticados), **SEMPRE** use o `auth.api.getSession` (@src/lib/auth.ts) para recuperar a sessão do usuário.
